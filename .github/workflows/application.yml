@@ -59,11 +59,11 @@ jobs:
       #   run: trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 student:latest
     
 
-      # - name: Push image to ECR
-      #   run: |
-      #     aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 954475336500.dkr.ecr.ap-south-1.amazonaws.com
-      #     docker tag student:latest 954475336500.dkr.ecr.ap-south-1.amazonaws.com/student:latest
-      #     docker push 954475336500.dkr.ecr.ap-south-1.amazonaws.com/student:latest
+      - name: Push image to ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 954475336500.dkr.ecr.ap-south-1.amazonaws.com
+          docker tag student:latest 954475336500.dkr.ecr.ap-south-1.amazonaws.com/student:latest
+          docker push 954475336500.dkr.ecr.ap-south-1.amazonaws.com/student:latest
       - name: Setup Terraform 
         uses: hashicorp/setup-terraform@v4
 
@@ -77,22 +77,22 @@ jobs:
         run: terraform validate
 
       - name: Terraform apply 
-        run: terraform destroy -auto-approve
+        run: terraform apply -auto-approve
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
         with:
           version: latest
 
-      # - name: Configure EKS cluster 
-      #   run: aws eks update-kubeconfig --name my-eks-cluster --region ap-south-1
+      - name: Configure EKS cluster 
+        run: aws eks update-kubeconfig --name my-eks-cluster --region ap-south-1
           
-      # - name: Deployment On kubernetes
-      #   run: |
-      #     kubectl apply -f k8s/
-      #     sleep 30
-      #     kubectl get pods 
-      #     kubectl get svc -o wide
+      - name: Deployment On kubernetes
+        run: |
+          kubectl apply -f k8s/
+          sleep 30
+          kubectl get pods 
+          kubectl get svc -o wide
 
           
 
