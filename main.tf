@@ -11,7 +11,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket       = "saee-cbz"
+    bucket       = "saeee.cbz"
     key          = "student-management/eks/terraform.tfstate"
     region       = "ap-south-1"
     use_lockfile = true
